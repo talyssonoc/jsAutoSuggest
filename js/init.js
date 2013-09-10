@@ -80,10 +80,9 @@ window.onload = function() {
 		},
 		suggestionClass : 'test',
 		create : function(s) {
-			console.log(s.textContent);
+			// console.log(s.textContent);
 		},
-		hideWhenChoose : false,
-		hideWhenClickOutside : false
+		hideWhenChoose : false
 	};
 
 	var autoSuggest = new jsAutoSuggest(field, tree, c);

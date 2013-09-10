@@ -15,9 +15,23 @@
 var jsAutoSuggest = function(_field, _tree, _config) {
 	
 	var KeyCode = {
+		Backspace : 8,
+		Shift : 16,
+		Control : 17,
+		Alt : 18,
+		CapsLock : 20,
 		Escape : 27,
+		PageUp : 33,
+		PageDown : 34,
+		End : 35,
+		Home : 36,
+		ArrowLeft : 37,
+		ArrowUp : 38,
+		ArrowRight : 39,
+		ArrowDown : 40,
 		Delete : 46,
-		Backspace : 8
+		charA : 65,
+		charC : 67
 	}
 
 	var _ = this;
@@ -137,7 +151,7 @@ var jsAutoSuggest = function(_field, _tree, _config) {
 				_.show(field.value);
 			}
 
-			// Pauses the click propagation,
+			// Stops the click propagation,
 			// so it doesn't close when clicks on some option
 			e.stopPropagation();
 		}, false);
@@ -177,11 +191,29 @@ var jsAutoSuggest = function(_field, _tree, _config) {
 	 * @param  {Event} e The event of the keyboard
 	 */
 	var _keydown = function(e) {
+
+		// console.log(e);
+
 		var key = e.keyCode || e.charCode;
 
 		if (key == KeyCode.Escape) {
 			_.hide();
-		} else {
+		}
+		else if(e.keyCode === KeyCode.ArrowUp || e.keyCode === KeyCode.ArrowDown) {
+			//Treat the moves here
+		}
+		else if(!(e.keyCode === KeyCode.Control 
+				|| e.keyCode === KeyCode.Shift
+				|| e.keyCode === KeyCode.Alt
+				|| e.keyCode === KeyCode.CapsLock
+				|| e.keyCode === KeyCode.ArrowRight
+				|| e.keyCode === KeyCode.ArrowLeft
+				|| e.keyCode === KeyCode.PageDown
+				|| e.keyCode === KeyCode.PageUp
+				|| e.keyCode === KeyCode.Home
+				|| e.keyCode === KeyCode.End
+				|| (e.ctrlKey && (e.keyCode === KeyCode.charA || KeyCode.charC))
+				)) {
 			_.show(field.value);
 		}
 	};
