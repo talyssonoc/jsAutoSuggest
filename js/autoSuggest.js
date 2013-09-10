@@ -14,8 +14,10 @@
  */
 var jsAutoSuggest = function(_field, _tree, _config) {
 	
-	var KB = {
-		ESC : 27
+	var KeyCode = {
+		Escape : 27,
+		Delete : 46,
+		Backspace : 8
 	}
 
 	var _ = this;
@@ -53,8 +55,6 @@ var jsAutoSuggest = function(_field, _tree, _config) {
 		optionsList =  document.createElement('div');
 		optionsList.id = 'jsAutoSuggestList';
 		document.body.insertBefore(optionsList, rootElement);
-
-		// _positionList();
 
 		field.addEventListener('keyup', _keydown, false);
 		field.addEventListener('change', _keydown, false);
@@ -179,7 +179,7 @@ var jsAutoSuggest = function(_field, _tree, _config) {
 	var _keydown = function(e) {
 		var key = e.keyCode || e.charCode;
 
-		if (key == KB.ESC) {
+		if (key == KeyCode.Escape) {
 			_.hide();
 		} else {
 			_.show(field.value);
