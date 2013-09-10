@@ -75,11 +75,11 @@ window.onload = function() {
 	var field = document.getElementById('inField');
 
 	var c = {
-		callback: function(w) {
+		select : function(w) {
 			alert('You clicked at: ' + w);
 		},
 		suggestionClass : 'test',
-		applyToSuggestion : function(s) {
+		create : function(s) {
 			console.log(s.textContent);
 		},
 		hideWhenChoose : false,

@@ -8,21 +8,25 @@
 /**
  * jsAutoSuggest constructor
  * @constructor
- * @param  {Element} inputField 	The field to where the list will be attached
- * @param  {Array} words jsT9 		Tree with the words
- * @param  {Function(word)} callback 	Callback function called when the user choses an option
+ * @param  {Element} _field 	The field to where the list will be attached
+ * @param  {Array} _tree jsT9 		Tree with the words
+ * @param {Object} _cofig Object with custom settings
  */
-var jsAutoSuggest = function(inputField, words, _config) {
+var jsAutoSuggest = function(_field, _tree, _config) {
 	
-	var ESC_KEY_CODE = 27;
+	var KB = {
+		ESC : 27
+	}
 
 	var _ = this;
 
 	var optionsList;
 
-	var tree = words;
+	var tree = _tree;
 	
-	var field = (typeof inputField.jquery !== 'undefined' ? inputField.get(0) : inputField);
+	//Check if the given field is a jQuery object,
+	//if so, gets the plain object inside it.
+	var field = (typeof _field.jquery !== 'undefined' ? _field.get(0) : _field);
 
 	var config = {
 		suggestionClass : '',
@@ -30,8 +34,8 @@ var jsAutoSuggest = function(inputField, words, _config) {
 		hideWhenClickOutside : true,
 
 		// callbacks
-		selected : function(){},
-		create : function(){},
+		select : function(){},
+		create : function(){}
 	};
 
 
@@ -45,12 +49,12 @@ var jsAutoSuggest = function(inputField, words, _config) {
 
 
 	this.init = function() {
-		var rootEl = document.body.childNodes[0];
+		var rootElement = document.body.childNodes[0];
 		optionsList =  document.createElement('div');
 		optionsList.id = 'jsAutoSuggestList';
-		document.body.insertBefore(optionsList, rootEl);
+		document.body.insertBefore(optionsList, rootElement);
 
-		_position();
+		// _positionList();
 
 		field.addEventListener('keyup', _keydown, false);
 		field.addEventListener('change', _keydown, false);
@@ -64,7 +68,7 @@ var jsAutoSuggest = function(inputField, words, _config) {
 
 	this.show = function(text) {
 		optionsList.innerHTML = '';
-		optionsList.style.display = 'none';
+		_.hide();
 
 		// If the input was not changed,
 		// uses the current value on the field,
@@ -79,7 +83,6 @@ var jsAutoSuggest = function(inputField, words, _config) {
 			var result = tree.predict(text);
 
 			if (result.length > 0) {
-				optionsList.innerHTML = '';
 				optionsList.appendChild(_createSuggestionList(result));
 				_show();
 			}
@@ -124,7 +127,7 @@ var jsAutoSuggest = function(inputField, words, _config) {
 
 		option.textContent = term;
 		option.addEventListener('mousedown', function(e) {
-			config.selected(term);
+			config.select(term);
 
 			field.value = this.textContent;
 
@@ -143,7 +146,7 @@ var jsAutoSuggest = function(inputField, words, _config) {
 	};
 
 
-	var _position = function() {
+	var _positionList = function() {
 		var element = field;
 		var offsetTop = 0, offsetLeft = 0;
 		
@@ -161,7 +164,7 @@ var jsAutoSuggest = function(inputField, words, _config) {
 
 
 	var _show = function() {
-		_position();
+		_positionList();
 
 		optionsList.style.display = 'block';
 		optionsList.style.marginRight  = -optionsList.offsetWidth  + 'px';
@@ -176,7 +179,7 @@ var jsAutoSuggest = function(inputField, words, _config) {
 	var _keydown = function(e) {
 		var key = e.keyCode || e.charCode;
 
-		if (key == ESC_KEY_CODE) {
+		if (key == KB.ESC) {
 			_.hide();
 		} else {
 			_.show(field.value);
