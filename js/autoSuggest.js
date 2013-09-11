@@ -34,7 +34,7 @@ var jsAutoSuggest = function(_field, _tree, _config) {
 		charC : 67
 	}
 
-	var _ = this;
+	var self = this;
 
 	var optionsList;
 
@@ -74,7 +74,7 @@ var jsAutoSuggest = function(_field, _tree, _config) {
 		field.addEventListener('change', _keydown, false);
 	
 		if (config.hideWhenClickOutside) {
-			document.addEventListener('click', _.hide, false);
+			document.addEventListener('click', self.hide, false);
 		}
 
 	};
@@ -82,7 +82,7 @@ var jsAutoSuggest = function(_field, _tree, _config) {
 
 	this.show = function(text) {
 		optionsList.innerHTML = '';
-		_.hide();
+		self.hide();
 
 		// If the input was not changed,
 		// uses the current value on the field,
@@ -146,9 +146,9 @@ var jsAutoSuggest = function(_field, _tree, _config) {
 			field.value = this.textContent;
 
 			if (config.hideWhenChoose) {
-				_.hide();
+				self.hide();
 			} else {
-				_.show(field.value);
+				self.show(field.value);
 			}
 
 			// Stops the click propagation,
@@ -197,7 +197,7 @@ var jsAutoSuggest = function(_field, _tree, _config) {
 		var key = e.keyCode || e.charCode;
 
 		if (key == KeyCode.Escape) {
-			_.hide();
+			self.hide();
 		}
 		else if(e.keyCode === KeyCode.ArrowUp || e.keyCode === KeyCode.ArrowDown) {
 			//Treat the moves here
@@ -214,7 +214,7 @@ var jsAutoSuggest = function(_field, _tree, _config) {
 				|| e.keyCode === KeyCode.End
 				|| (e.ctrlKey && (e.keyCode === KeyCode.charA || KeyCode.charC))
 				)) {
-			_.show(field.value);
+			self.show(field.value);
 		}
 	};
 
