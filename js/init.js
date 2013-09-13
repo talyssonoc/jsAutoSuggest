@@ -28,7 +28,6 @@ var words = ['Lorem',
 	'ullamco', 
 	'laboris', 
 	'nisi', 
-	'ut', 
 	'aliquip', 
 	'ex', 
 	'ea', 
@@ -37,15 +36,12 @@ var words = ['Lorem',
 	'Duis', 
 	'aute', 
 	'irure', 
-	'dolor', 
 	'in', 
 	'reprehenderit', 
-	'in', 
 	'voluptate', 
 	'velit', 
 	'esse', 
 	'cillum', 
-	'dolore', 
 	'eu', 
 	'fugiat', 
 	'nulla', 
@@ -57,7 +53,6 @@ var words = ['Lorem',
 	'non', 
 	'proident', 
 	'sunt', 
-	'in', 
 	'culpa', 
 	'qui', 
 	'officia', 
@@ -68,12 +63,9 @@ var words = ['Lorem',
 	'est', 
 	'laborum'];
 
-var tree = new T9(words);
-
-
+var tree = new T9(words, {maxAmount : 15});
 window.onload = function() {
 	var field = document.getElementById('inField');
-
 	var c = {
 		select : function(w) {
 			alert('You clicked at: ' + w);
@@ -81,11 +73,9 @@ window.onload = function() {
 		suggestionClass : 'test',
 		create : function(s) {
 			// console.log(s.textContent);
-		},
-		hideWhenChoose : false
+			hideWhenChoose : false
+		}
 	};
-
 	var autoSuggest = new jsAutoSuggest(field, tree, c);
 	autoSuggest.init();
-
 };
