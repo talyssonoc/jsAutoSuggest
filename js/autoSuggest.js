@@ -46,12 +46,13 @@ var jsAutoSuggest = function(_field, _tree, _config) {
 
 	var config = {
 		suggestionClass : '',
-		hideWhenChoose : false,
-		hideWhenClickOutside : true,
+		hideOnChoose : false,
+		hideOnClickOutside : true,
 
 		// callbacks
 		select : function(){},
-		create : function(){}
+		create : function(){},
+		show : function(){}
 	};
 
 
@@ -73,7 +74,7 @@ var jsAutoSuggest = function(_field, _tree, _config) {
 		field.addEventListener('keyup', _keydown, false);
 		field.addEventListener('change', _keydown, false);
 	
-		if (config.hideWhenClickOutside) {
+		if (config.hideOnClickOutside) {
 			document.addEventListener('click', self.hide, false);
 		}
 
@@ -98,6 +99,7 @@ var jsAutoSuggest = function(_field, _tree, _config) {
 
 			if (result.length > 0) {
 				optionsList.appendChild(_createSuggestionList(result));
+				config.show();
 				_show();
 			}
 		}	
@@ -145,7 +147,7 @@ var jsAutoSuggest = function(_field, _tree, _config) {
 
 			field.value = this.textContent;
 
-			if (config.hideWhenChoose) {
+			if (config.hideOnChoose) {
 				self.hide();
 			} else {
 				self.show(field.value);

@@ -16,10 +16,11 @@ Custom settings
 ===============
 
 * `select`: A function (that receiva a word as argument) that runs after the user clicks an suggestion.
-* `suggestionClass`: String with one or more classes (separated with spaces) to any of the options of the suggestion menu.
 * `create`: Function (that receive a suggestion HTML element as argument) that will be applied to any of the suggestions of the menu.
-* `hideWhenChoose`: Hides the suggestion menu when the user clicks on some of them. (Default: false).
-* `hideWhenClickOutside`: Hides the suggestion menu when the user clicks out of it. (Default: true).
+* `show`: Function that runs right after the list is showed
+* `suggestionClass`: String with one or more classes (separated with spaces) to any of the options of the suggestion menu.
+* `hideOnChoose`: Hides the suggestion menu when the user clicks on some of them. (Default: false).
+* `hideOnClickOutside`: Hides the suggestion menu when the user clicks out of it. (Default: true).
 
 API
 ===
