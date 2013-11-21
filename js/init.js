@@ -74,8 +74,6 @@ window.onload = function() {
 	var c = {
 		suggestionClass : 'test',
 		hideOnChoose : false,
-		debounce : true,
-		debounceTime : 1000,
 		select : function(w) {
 			alert('You clicked at: ' + w);
 		}

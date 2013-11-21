@@ -47,6 +47,7 @@
 	var config = {
 		suggestionClass : '',
 		hideOnChoose : false,
+		fillOnChoose : true,
 		hideOnClickOutside : true,
 		debounce : false,
 		debounceTime : 500,
@@ -176,7 +177,9 @@
 	 	option.addEventListener('mousedown', function(e) {
 	 		config.select(term);
 
-	 		field.value = this.textContent;
+	 		if(config.fillOnChoose) {
+	 			field.value = term;
+	 		}
 
 	 		if (config.hideOnChoose) {
 	 			self.hide();

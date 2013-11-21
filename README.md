@@ -25,6 +25,7 @@ Custom settings
 
 * `suggestionClass`: String with one or more classes (separated with spaces) to any of the options of the suggestion menu.
 * `hideOnChoose`: Hides the suggestion menu when the user clicks on some of them. (Default: false).
+* `fillOnChoose`: Fills the field with the option when it's choosen. (Default: true).
 * `hideOnClickOutside`: Hides the suggestion menu when the user clicks out of it. (Default: true).
 * `debounce`: Debounces the showing of the list of suggestions. (Default: false).
 * `debounceTime`: Time of debouncing in milliseconds. (Default: 500).
