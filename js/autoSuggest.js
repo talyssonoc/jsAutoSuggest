@@ -12,34 +12,34 @@
  * @param  {Array} _tree jsT9 		Tree with the words
  * @param {Object} _cofig Object with custom settings
  */
-var jsAutoSuggest = function(_field, _tree, _config) {
-	
-	var KeyCode = {
-		Backspace : 8,
-		Shift : 16,
-		Control : 17,
-		Alt : 18,
-		CapsLock : 20,
-		Escape : 27,
-		PageUp : 33,
-		PageDown : 34,
-		End : 35,
-		Home : 36,
-		ArrowLeft : 37,
-		ArrowUp : 38,
-		ArrowRight : 39,
-		ArrowDown : 40,
-		Delete : 46,
-		charA : 65,
-		charC : 67
-	}
+ var jsAutoSuggest = function(_field, _tree, _config) {
 
-	var self = this;
+ 	var KeyCode = {
+ 		Backspace : 8,
+ 		Shift : 16,
+ 		Control : 17,
+ 		Alt : 18,
+ 		CapsLock : 20,
+ 		Escape : 27,
+ 		PageUp : 33,
+ 		PageDown : 34,
+ 		End : 35,
+ 		Home : 36,
+ 		ArrowLeft : 37,
+ 		ArrowUp : 38,
+ 		ArrowRight : 39,
+ 		ArrowDown : 40,
+ 		Delete : 46,
+ 		charA : 65,
+ 		charC : 67
+ 	}
 
-	var optionsList;
+ 	var self = this;
 
-	var tree = _tree;
-	
+ 	var optionsList;
+
+ 	var tree = _tree;
+
 	//Check if the given field is a jQuery object,
 	//if so, gets the plain object inside it.
 	var field = (typeof _field.jquery !== 'undefined' ? _field.get(0) : _field);
@@ -48,6 +48,8 @@ var jsAutoSuggest = function(_field, _tree, _config) {
 		suggestionClass : '',
 		hideOnChoose : false,
 		hideOnClickOutside : true,
+		debounce : false,
+		debounceTime : 500,
 
 		// callbacks
 		select : function(){},
@@ -73,17 +75,44 @@ var jsAutoSuggest = function(_field, _tree, _config) {
 
 		field.addEventListener('keyup', _keydown, false);
 		field.addEventListener('change', _keydown, false);
-	
+
 		if (config.hideOnClickOutside) {
 			document.addEventListener('click', self.hide, false);
 		}
 
+		//Creates the "debounced" version of the show method (not the callback)
+		if (config.debounce) {
+
+			this.show = (function(fn, delay) {
+
+				var debouncedFn = function() {
+					var args = arguments;
+					var context = this;
+
+					if(debouncedFn.timeout) {
+						clearTimeout(debouncedFn.timeout);
+					}
+
+					debouncedFn.timeout = setTimeout(function() {
+						fn.apply(context, args);
+					}, delay);
+
+				};
+
+				return debouncedFn;
+
+			})(this.show, config.debounceTime);
+		}
+
 	};
 
-
-	this.show = function(text) {
-		optionsList.innerHTML = '';
-		self.hide();
+	/**
+	 * Show the suggestions list for the passed text (if any) or the current content of the field.
+	 * @param  {String} text Text that is going to be completed. If this parameter is ignored, it will be set as the current content of the field.
+	 */
+	 this.show = function(text) {
+	 	optionsList.innerHTML = '';
+	 	self.hide();
 
 		// If the input was not changed,
 		// uses the current value on the field,
@@ -102,13 +131,15 @@ var jsAutoSuggest = function(_field, _tree, _config) {
 				config.show();
 				_show();
 			}
-		}	
+		}
 	};
 
-
-	this.hide = function() {
-		optionsList.style.display = 'none';
-	};
+	/**
+	 * Hides the suggestions list
+	 */
+	 this.hide = function() {
+	 	optionsList.style.display = 'none';
+	 };
 
 
 	/**
@@ -116,19 +147,19 @@ var jsAutoSuggest = function(_field, _tree, _config) {
 	 * @param  {Array} predictions 	The words that got to be part of the list
 	 * @return {Element}            Element with clickable options
 	 */
-	var _createSuggestionList = function(predictions) {
-		var optionsContent = document.createElement('div');
+	 var _createSuggestionList = function(predictions) {
+	 	var optionsContent = document.createElement('div');
 
-		for (var _op_ in predictions) {
-			var op = predictions[_op_];
+	 	for (var _op_ in predictions) {
+	 		var op = predictions[_op_];
 
-			var option = _createSuggestion(op);
-			optionsContent.appendChild(option);
-			config.create(option);
-		}
+	 		var option = _createSuggestion(op);
+	 		optionsContent.appendChild(option);
+	 		config.create(option);
+	 	}
 
-		return optionsContent;
-	};
+	 	return optionsContent;
+	 };
 
 
 	/**
@@ -136,36 +167,38 @@ var jsAutoSuggest = function(_field, _tree, _config) {
 	 * @param  {String} word  The content of the option
 	 * @return {Element}       Clickable option
 	 */
-	var _createSuggestion = function(term) {
-		var option = document.createElement('div');
-		option.className = 'jsAutoSuggestOption';
-		option.className += ' ' + config.suggestionClass;
+	 var _createSuggestion = function(term) {
+	 	var option = document.createElement('div');
+	 	option.className = 'jsAutoSuggestOption';
+	 	option.className += ' ' + config.suggestionClass;
 
-		option.textContent = term;
-		option.addEventListener('mousedown', function(e) {
-			config.select(term);
+	 	option.textContent = term;
+	 	option.addEventListener('mousedown', function(e) {
+	 		config.select(term);
 
-			field.value = this.textContent;
+	 		field.value = this.textContent;
 
-			if (config.hideOnChoose) {
-				self.hide();
-			} else {
-				self.show(field.value);
-			}
+	 		if (config.hideOnChoose) {
+	 			self.hide();
+	 		} else {
+	 			self.show(field.value);
+	 		}
 
 			// Stops the click propagation,
 			// so it doesn't close when clicks on some option
 			e.stopPropagation();
 		}, false);
 
-		return option;
-	};
+	 	return option;
+	 };
 
+	/**
+	 * Positions the list right below the field.
+	 */
+	 var _positionList = function() {
+	 	var element = field;
+	 	var offsetTop = 0, offsetLeft = 0;
 
-	var _positionList = function() {
-		var element = field;
-		var offsetTop = 0, offsetLeft = 0;
-		
 		// Gets the top and left position of where the list should be
 		do {
 			offsetTop  += element.offsetTop  || 0;
@@ -192,9 +225,10 @@ var jsAutoSuggest = function(_field, _tree, _config) {
 	 * Reacts to keydown into the field
 	 * @param  {Event} e The event of the keyboard
 	 */
-	var _keydown = function(e) {
+	 var _keydown = function(e) {
 
-		// console.log(e);
+	 	if(!field.value.length > 0)
+	 		self.hide();
 
 		var key = e.keyCode || e.charCode;
 
@@ -205,20 +239,20 @@ var jsAutoSuggest = function(_field, _tree, _config) {
 			//Treat the moves here
 		}
 		else if(!(e.keyCode === KeyCode.Control 
-				|| e.keyCode === KeyCode.Shift
-				|| e.keyCode === KeyCode.Alt
-				|| e.keyCode === KeyCode.CapsLock
-				|| e.keyCode === KeyCode.ArrowRight
-				|| e.keyCode === KeyCode.ArrowLeft
-				|| e.keyCode === KeyCode.PageDown
-				|| e.keyCode === KeyCode.PageUp
-				|| e.keyCode === KeyCode.Home
-				|| e.keyCode === KeyCode.End
-				|| (e.ctrlKey && (e.keyCode === KeyCode.charA || KeyCode.charC))
-				)) {
+			|| e.keyCode === KeyCode.Shift
+			|| e.keyCode === KeyCode.Alt
+			|| e.keyCode === KeyCode.CapsLock
+			|| e.keyCode === KeyCode.ArrowRight
+			|| e.keyCode === KeyCode.ArrowLeft
+			|| e.keyCode === KeyCode.PageDown
+			|| e.keyCode === KeyCode.PageUp
+			|| e.keyCode === KeyCode.Home
+			|| e.keyCode === KeyCode.End
+			|| (e.ctrlKey && (e.keyCode === KeyCode.charA || KeyCode.charC))
+			)) {
 			self.show(field.value);
-		}
-	};
+	}
+};
 
-	return this;
+return this;
 }

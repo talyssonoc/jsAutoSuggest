@@ -72,13 +72,12 @@ var tree = new T9(words, {maxAmount : 15});
 window.onload = function() {
 	var field = document.getElementById('inField');
 	var c = {
+		suggestionClass : 'test',
+		hideOnChoose : false,
+		debounce : true,
+		debounceTime : 1000,
 		select : function(w) {
 			alert('You clicked at: ' + w);
-		},
-		suggestionClass : 'test',
-		create : function(s) {
-			// console.log(s.textContent);
-			hideOnChoose : false
 		}
 	};
 	var autoSuggest = new jsAutoSuggest(field, tree, c);

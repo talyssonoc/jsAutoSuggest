@@ -15,12 +15,19 @@ For more info, see the example.
 Custom settings
 ===============
 
+## Calbacks
+
 * `select`: A function (that receiva a word as argument) that runs after the user clicks an suggestion.
 * `create`: Function (that receive a suggestion HTML element as argument) that will be applied to any of the suggestions of the menu.
 * `show`: Function that runs right after the list is showed
+
+## Options
+
 * `suggestionClass`: String with one or more classes (separated with spaces) to any of the options of the suggestion menu.
 * `hideOnChoose`: Hides the suggestion menu when the user clicks on some of them. (Default: false).
 * `hideOnClickOutside`: Hides the suggestion menu when the user clicks out of it. (Default: true).
+* `debounce`: Debounces the showing of the list of suggestions. (Default: false).
+* `debounceTime`: Time of debouncing in milliseconds. (Default: 500).
 
 API
 ===
