@@ -9,7 +9,7 @@
  * jsAutoSuggest constructor
  * @constructor
  * @param  {Element} _field 	The field to where the list will be attached
- * @param  {Array} _tree jsT9 		Tree with the words
+ * @param  {Array or String} _tree jsT9 		Tree with the words or String with the path of a JSON file (see jsT9 documentation)
  * @param {Object} _cofig Object with custom settings
  */
  var jsAutoSuggest = function(_field, _tree, _config) {
@@ -38,9 +38,9 @@
 
  	var optionsList;
 
- 	var tree = _tree;
+ 	var tree;
 
-	//Check if the given field is a jQuery object,
+ 	//Check if the given field is a jQuery object,
 	//if so, gets the plain object inside it.
 	var field = (typeof _field.jquery !== 'undefined' ? _field.get(0) : _field);
 
@@ -51,6 +51,7 @@
 		hideOnClickOutside : true,
 		debounce : false,
 		debounceTime : 500,
+		treeOptions : {},
 
 		// callbacks
 		select : function(){},
@@ -69,6 +70,17 @@
 
 
 	this.init = function() {
+		if(_tree instanceof T9) {
+	 		tree = _tree;
+	 	}
+	 	else if((typeof _tree) === 'string') {
+	 		tree = new T9(_tree, config.treeOptions);
+	 	}
+	 	else {
+	 		throw (typeof _tree) + ' is not supported as data source';
+	 	}
+
+
 		var rootElement = document.body.childNodes[0];
 		optionsList =  document.createElement('div');
 		optionsList.id = 'jsAutoSuggestList';
@@ -251,11 +263,11 @@
 			|| e.keyCode === KeyCode.PageUp
 			|| e.keyCode === KeyCode.Home
 			|| e.keyCode === KeyCode.End
-			|| (e.ctrlKey && (e.keyCode === KeyCode.charA || KeyCode.charC))
+			|| (e.ctrlKey && (e.keyCode === KeyCode.charA || e.keyCode === KeyCode.charC))
 			)) {
 			self.show(field.value);
-	}
-};
+		}
+	};
 
-return this;
+	return this;
 }

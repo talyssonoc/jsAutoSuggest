@@ -7,7 +7,7 @@ Usage
 =====
 
 1. Create a [jsT9](https://github.com/talyssonoc/jsT9 "jsT9") tree with the words
-2. Create a new jsAutoSuggest object, passing the field from where the input will be taken and where the suggestion box will be appended, the tree, and a custom settings object if needed (the settings documentation is in the next section).
+2. Create a new jsAutoSuggest object, passing the field from where the input will be taken and where the suggestion box will be appended, the tree (or the path of a JSON file with the words, see [jsT9](https://github.com/talyssonoc/jsT9 "jsT9")  documentation), and a custom settings object if needed (the settings documentation is in the next section).
 3. Run the method init() of jsAutoSuggest.
 
 For more info, see the example.
@@ -29,6 +29,7 @@ Custom settings
 * `hideOnClickOutside`: Hides the suggestion menu when the user clicks out of it. (Default: true).
 * `debounce`: Debounces the showing of the list of suggestions. (Default: false).
 * `debounceTime`: Time of debouncing in milliseconds. (Default: 500).
+* `treeOptions`: Used to build the tree (but not required) if a JSON file path is passed as first argument.
 
 API
 ===
