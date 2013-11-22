@@ -29,7 +29,7 @@ Custom settings
 * `hideOnClickOutside`: Hides the suggestion menu when the user clicks out of it. (Default: true).
 * `debounce`: Debounces the showing of the list of suggestions. (Default: false).
 * `debounceTime`: Time of debouncing in milliseconds. (Default: 500).
-* `treeOptions`: Used to build the tree (but not required) if a JSON file path is passed as first argument.
+* `treeOptions`: Used to build the tree (but not required) if a JSON file path is passed as second argument.
 
 API
 ===
