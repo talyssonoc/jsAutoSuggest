@@ -68,14 +68,15 @@ var words = ['Lorem',
 'est',
 'laborum'];
 
-var tree = new T9(words, {maxAmount : 15});
+var tree = new jsT9(words, {maxAmount : 15});
 window.onload = function() {
 	var field = document.getElementById('inField');
 	var c = {
 		suggestionClass : 'test',
-		hideOnChoose : false,
+    hideOnClickOutside : false,
+
 		select : function(w) {
-			alert('You clicked at: ' + w);
+			console.log('You clicked at: ' + w);
 		}
 	};
 	var autoSuggest = new jsAutoSuggest(field, tree, c);
